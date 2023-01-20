@@ -157,7 +157,7 @@ void KeyExpansionCore(unsigned char* tmpCore, unsigned char index)
 	unsigned char swapVar = tmpCore[0];
 	tmpCore[0] = tmpCore[1];
 	tmpCore[1] = tmpCore[2];
-	tmpCore[2] = tmpCore[3];	
+	tmpCore[2] = tmpCore[3];
 	tmpCore[3] = swapVar;
 
 	// S-box 4 bytes 
@@ -211,7 +211,7 @@ void KeyExpansion(unsigned char inputKey[16], unsigned char expandedKeys[176]) {
  * SubRoundKey is simply an XOR of a 128-bit block with the 128-bit key.
  * So basically does the same as AddRoundKey in the encryption
  */
-void SubRoundKey(unsigned char* state, unsigned char* roundKey) 
+void SubRoundKey(unsigned char* state, unsigned char* roundKey)
 {
 	for (int i = 0; i < 16; i++) {
 		state[i] = state[i] ^ roundKey[i];
@@ -244,7 +244,7 @@ void InverseMixColumns(unsigned char* state) {
 	pomState[14] = (unsigned char)mul13[state[12]] ^ mul9[state[13]] ^ mul14[state[14]] ^ mul11[state[15]];
 	pomState[15] = (unsigned char)mul11[state[12]] ^ mul13[state[13]] ^ mul9[state[14]] ^ mul14[state[15]];
 
-	for (int i = 0; i < 16; i++) 
+	for (int i = 0; i < 16; i++)
 	{
 		state[i] = pomState[i];
 	}
@@ -289,7 +289,7 @@ void ShiftRows(unsigned char* state) {
 void SubBytes(unsigned char* state)
 {
 	for (int i = 0; i < 16; i++) // Perform substitution to each of the 16 bytes
-	{ 
+	{
 		state[i] = inv_s[state[i]];
 	}
 }
@@ -414,7 +414,7 @@ int main()
 
 	//Get encryptedMessage Lenght
 	int n = strlen((const char*)encryptedMessage);
- 
+
 	unsigned char* unsignedEncryptedMessage = new unsigned char[n];
 	int index = 0;
 	while (encryptedMessage[index] != 0)
@@ -463,7 +463,7 @@ int main()
 
 	std::cout << std::endl;
 	std::cout << "Decrypted message in hex:" << std::endl;
-	for (int i = 0; i < encryptedMessageLenght; i++) 
+	for (int i = 0; i < encryptedMessageLenght; i++)
 	{
 		std::cout << std::hex << (int)decryptedMessage[i];
 		std::cout << " ";
@@ -477,6 +477,24 @@ int main()
 		std::cout << decryptedMessage[i];
 	}
 	std::cout << std::endl;
+
+
+
+	// Write the encrypted string out to file "Save.txt"
+	std::ofstream outfile;
+	outfile.open("Saved_Text.txt", std::ios::out | std::ios::binary);
+	if (outfile.is_open())
+	{
+		outfile << decryptedMessage;
+		outfile.close();
+		std::cout << "Wrote encrypted message to file Saved_Text" << std::endl;
+	}
+	else
+	{
+		std::cout << "Unable to open file3";
+		return -1;
+	}
+
 
 	//Free memory
 	delete[] unsignedEncryptedMessage;
